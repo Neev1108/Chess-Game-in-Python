@@ -6,11 +6,12 @@ from Model.Piece import Piece, PieceColor, PieceType
 class Knight(Piece):
 
     def __init__(self, isWhite):
-        super().__init__(isWhite, PieceType.Knight)
+        Piece.__init__(self,isWhite, PieceType.Knight)
         self.type = PieceType.Knight
 
     def getType(self):
         return self.type
+    
 
     def isValidMove(origin: Tile, destination: Tile):
 

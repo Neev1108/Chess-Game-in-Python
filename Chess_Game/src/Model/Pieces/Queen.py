@@ -5,7 +5,7 @@ from Model.Tile import Tile
 class Queen(Piece):
 
     def __init__(self, isWhite):
-        super().__init__(isWhite, PieceType.Queen)
+        Piece.__init__(self,isWhite, PieceType.Queen)
         self.type = PieceType.Queen
         
     def getType(self):
@@ -21,4 +21,5 @@ class Queen(Piece):
             return True
 
         return False
+    
         

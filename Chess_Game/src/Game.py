@@ -7,4 +7,5 @@ if __name__ == '__main__':
     game = Model()
     game.printBoard()
     
+    game.playGame()
     

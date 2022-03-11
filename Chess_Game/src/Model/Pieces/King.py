@@ -8,7 +8,7 @@ class King(Piece):
 
 
     def __init__(self, isWhite):
-        super().__init__(isWhite, PieceType.King)
+        Piece.__init__(self,isWhite, PieceType.King)
         self.type = PieceType.King
         
     def getType(self):
@@ -19,6 +19,7 @@ class King(Piece):
 
     def getIsInCheck(self):
         return self.isInCheck
+    
 
     def isValidMove(start: Tile, end: Tile):
         diffRow = start.getRow() - end.getRow()

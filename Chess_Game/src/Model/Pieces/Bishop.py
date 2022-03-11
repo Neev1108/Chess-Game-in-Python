@@ -5,12 +5,13 @@ class Bishop(Piece):
     
     
     def __init__(self, isWhite: bool):
-        super().__init__(isWhite, PieceType.Bishop)
+        Piece.__init__(self,isWhite, PieceType.Bishop)
         self.type = PieceType.Bishop
         
     
     def getType(self):
         return self.type
+    
     
     
     def isValidMove(start: Tile, end: Tile):

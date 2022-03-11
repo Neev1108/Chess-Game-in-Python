@@ -4,7 +4,7 @@ from Model.Piece import Piece, PieceColor, PieceType
 class Rook(Piece):
     
     def __init__(self, isWhite):
-        super().__init__(isWhite, PieceType.Rook)
+        Piece.__init__(self,isWhite, PieceType.Rook)
         self.type = PieceType.Rook
         
     def getType(self):
@@ -15,3 +15,4 @@ class Rook(Piece):
             return True
 
         return False
+    

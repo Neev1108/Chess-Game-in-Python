@@ -5,8 +5,10 @@ from Model.Piece import Piece, PieceColor, PieceType
 class Pawn(Piece):
 
     def __init__(self, isWhite):
-        super().__init__(isWhite, PieceType.Pawn)
+        Piece.__init__(self,isWhite, PieceType.Pawn)
         self.type = PieceType.Pawn
+        
+        
 
     def getType(self):
         return self.type
@@ -43,8 +45,10 @@ class Pawn(Piece):
         
             return True
         
+        
         if destination.getIsOccupied == True:
             print("Pawns cannot interact with pieces directly ahead")
             return False
         
         return True
+    

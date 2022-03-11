@@ -1,7 +1,8 @@
 
 from Model.Tile import Tile
+from abc import ABC, abstractmethod
 
-class PieceType():
+class PieceType(ABC):
     King = "K"
     Queen = "Q"
     Knight = "C"
@@ -19,16 +20,18 @@ class Piece():
     color = ""
     PieceAlive = True
     hasMoved = False
-    colorString = ""
     currenTile = ""
     hasMoved = False
+    colorString = ""
     
     def __init__(self, isWhite, type):
         self.isWhite = isWhite
         if isWhite == True:
             self.color = PieceColor.White
+            self.colorString = "White"
         else:
             self.color = PieceColor.Black
+            self.colorString = "Black"
         self.type = type
         
 
@@ -62,10 +65,15 @@ class Piece():
         self.hasMoved = b
         
     def getColorString(self):
-        return self.colorString
+        return self.color_string
         
     def __str__(self):
         return self.getColorString + " " + self.getPieceType()
+    
+    
+    @abstractmethod
+    def isValidMove(self, origin: Tile, destination:Tile) -> bool:
+        pass
     
      
     def move(self, origin: Tile, destination:Tile):
