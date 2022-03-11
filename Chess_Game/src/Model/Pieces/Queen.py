@@ -1,13 +1,12 @@
-import Piece
-import Tile
-from Piece import PieceType, PieceColor
+from Model.Piece import Piece, PieceColor, PieceType
+from Model.Tile import Tile
 
 
 class Queen(Piece):
-    type = PieceType()
 
     def __init__(self, isWhite):
-        super(isWhite, PieceType.Queen)
+        super().__init__(isWhite, PieceType.Queen)
+        self.type = PieceType.Queen
         
     def getType(self):
         return self.type

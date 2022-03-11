@@ -1,21 +1,22 @@
-import Board, Player
-from enum import Enum
+from Model.Board import Board
+from Model.Player import Player
 
-class GameEvent(Enum):
-    WhiteWin = "WW"
-    BlackWin = "BW"
-
+class GameEvent():
+    WhiteWin = "1"
+    BlackWin = "2"
+    IN_PROGRESS = "3"
+    PAUSED = "4"
+    NOT_STARTED = "5"
+    
 class Model:
-    
-    board = Board()
-    player1 = Player("White")
-    player2 = Player("Black")
-    
-    doTurn = Player()
-    
-    event = GameEvent()
-    
     def __init__(self):
+        self.board = Board()
+        self.player1 = Player("White")
+        self.player2 = Player("Black")
+    
+        self.doTurn = self.player1
+        self.event = GameEvent.NOT_STARTED
+        
         if self.player1.getColor() == "White":
             self.doTurn = self.player1
         else:
@@ -36,18 +37,18 @@ class Model:
     
     def printBoard(self):
         b = self.board.getBoard()
-        
         for x in range(8):
             for y in range(8):
                 if b[x][y].getPiece() == None:
-                    print("-  ")
+                    print("-  ", end="")
                     if y == 7:
-                        print(end=" ")
+                        print()
                 else:
-                    print(b[x][y].getPiece().getPieceColor().toString() + b[x][y].getPiece().getPieceType().toString() + " ")
+                    print(str(b[x][y].getPiece().getPieceColor()) + str(b[x][y].getPiece().getPieceType()) + " ", end =" ")
                     
                     if y == 7:
-                        print(end=" ")
+                        print()
+                        
                         
     def playGame(self):
         currentPlayer = self.getPlayer1()
@@ -121,4 +122,6 @@ class Model:
                     
                 print("Turn Complete , " + currentPlayer.toString() + " will begin their turn.")
                 
-    
+                        
+                  
+                  

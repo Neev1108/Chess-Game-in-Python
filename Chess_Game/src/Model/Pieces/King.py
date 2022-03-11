@@ -1,16 +1,15 @@
 
-import Piece
-import Tile
-from Piece import PieceType, PieceColor
+from Model.Piece import Piece, PieceColor, PieceType
+from Model.Tile import Tile
 
 
 class King(Piece):
-    type = PieceType()
     isInCheck = bool(False)
 
 
     def __init__(self, isWhite):
-        super(isWhite, PieceType.King)
+        super().__init__(isWhite, PieceType.King)
+        self.type = PieceType.King
         
     def getType(self):
         return self.type

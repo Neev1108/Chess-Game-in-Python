@@ -1,7 +1,7 @@
-from enum import Enum
-import Tile
 
-class PieceType(Enum):
+from Model.Tile import Tile
+
+class PieceType():
     King = "K"
     Queen = "Q"
     Knight = "C"
@@ -9,7 +9,7 @@ class PieceType(Enum):
     Pawn = "P"
     Rook = "R"
     
-class PieceColor(Enum):
+class PieceColor():
     White = "W"
     Black = "B"
 
@@ -23,7 +23,7 @@ class Piece():
     currenTile = ""
     hasMoved = False
     
-    def __init__(self, isWhite, type: PieceType):
+    def __init__(self, isWhite, type):
         self.isWhite = isWhite
         if isWhite == True:
             self.color = PieceColor.White
@@ -59,7 +59,7 @@ class Piece():
         return self.hasMoved
     
     def setHasMoved(self, b: bool):
-        hasMoved = b
+        self.hasMoved = b
         
     def getColorString(self):
         return self.colorString

@@ -1,14 +1,10 @@
 
 
 class Player():
-    color = str("")
     
-    # Need to modify logic on how to store opponent info
-    # Python has trouble creating an object in its own class definition
-    
-    opponent = Player()
     
     def __init__(self, color):
+        self.opponent = []
         self.color = color
         
     
@@ -22,10 +18,10 @@ class Player():
         return self.color + " Player"
     
     
-    def getOpponent() -> Player:
-        return opponent
+    def getOpponent(self):
+        return self.opponent[0]
     
-    def setOpponent(p: Player):
-        self.opponent = p
+    def setOpponent(self,p):
+        self.opponent.append(p)
     
     

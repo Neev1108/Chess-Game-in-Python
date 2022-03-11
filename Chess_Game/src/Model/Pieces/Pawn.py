@@ -1,12 +1,12 @@
-import Piece
-from Piece import PieceType
+from Model.Piece import Piece, PieceColor, PieceType
 
 
 
 class Pawn(Piece):
 
     def __init__(self, isWhite):
-        super(isWhite, PieceType.Pawn)
+        super().__init__(isWhite, PieceType.Pawn)
+        self.type = PieceType.Pawn
 
     def getType(self):
         return self.type

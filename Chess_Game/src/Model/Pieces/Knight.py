@@ -1,13 +1,13 @@
-import Piece
-import Tile
-from Piece import PieceType, PieceColor
+
+from Model.Tile import Tile
+from Model.Piece import Piece, PieceColor, PieceType
 
 
 class Knight(Piece):
-    type = PieceType()
 
     def __init__(self, isWhite):
-        super(isWhite, PieceType.Knight)
+        super().__init__(isWhite, PieceType.Knight)
+        self.type = PieceType.Knight
 
     def getType(self):
         return self.type

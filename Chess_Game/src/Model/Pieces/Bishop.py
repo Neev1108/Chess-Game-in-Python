@@ -1,13 +1,12 @@
-from Piece import PieceType
-import Piece
-import Tile
+from Model.Piece import Piece, PieceColor, PieceType
+from Model.Tile import Tile
 
 class Bishop(Piece):
     
-    type = PieceType()
     
     def __init__(self, isWhite: bool):
-        super(isWhite, PieceType.Bishop)
+        super().__init__(isWhite, PieceType.Bishop)
+        self.type = PieceType.Bishop
         
     
     def getType(self):
