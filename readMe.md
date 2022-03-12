@@ -11,3 +11,9 @@ TODO
 
 ModelTester.py is the entry point of the application so far.
 
+To run program: 
+
+```
+python3 Chess_Game/src/Game.py
+```
+
