@@ -9,8 +9,6 @@ TODO
 - Reimplement Player Logic slightly so the player class does not create a player object inside its own class blueprint
 - Implement an Move interface in python (either a soft interface or a hard interface as Python interfaces are different from java)
 
-ModelTester.py is the entry point of the application so far.
-
 To run program: 
 
 ```

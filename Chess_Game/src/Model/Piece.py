@@ -65,7 +65,7 @@ class Piece():
         self.hasMoved = b
         
     def getColorString(self):
-        return self.color_string
+        return self.colorString
     
     def getColorString(self, isWhite):
         if isWhite == True:

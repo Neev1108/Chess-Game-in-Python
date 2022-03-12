@@ -1,6 +1,8 @@
 
 
 class Tile:
+    
+    
     def __init__(self, row, col, piece):
         self.occupied = False
         self.piece = piece

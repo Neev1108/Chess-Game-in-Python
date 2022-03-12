@@ -16,10 +16,10 @@ class Knight(Piece):
         return super().getColorString(self.isWhite)
     
 
-    def isValidMove(origin: Tile, destination: Tile):
+    def isValidMove(self, origin: Tile, destination: Tile):
 
         if destination.getIsOccupied() == True:
-            if destination.getPiece().isWhite() == self.isWhite():
+            if destination.getPiece().isWhite() == self.isWhite:
                 return False
 
         x_diff = abs(destination.getRow() - origin.getRow())

@@ -89,7 +89,7 @@ class Model:
                 continue
 
             currentPiece = currentTile.getPiece()
-            if currentPlayer.getColor() == currentPiece.getColorString():
+            if currentPlayer.getColor() != currentPiece.getColorString():
                 print("The piece you selected is your opponent's. Please select a " +
                       currentPlayer.getColor() + " piece.")
                 continue
@@ -229,10 +229,17 @@ class Model:
     
     #These 3 methods need to be worked on
     
-    def checkDestinationForAlly(move, player, piecedMoved):
-        return
+    def checkDestinationForAlly(move: Moves, player: Player, piecedMoved: Piece):
+        if move.getEndPos().getOccupied() == False:
+            return False
+        
+        if piecedMoved.getColorString() == move.getDestinationPiece().getColorString():
+            return True
+        
+        return False
                
     def checkCollision(move, player, pieceMoved):
+        
         return
     
     
