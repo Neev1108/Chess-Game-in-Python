@@ -10,6 +10,9 @@ class Rook(Piece):
     def getType(self):
         return self.type
     
+    def getColorString(self):
+        return super().getColorString(self.isWhite)
+    
     def isValidMove(start: Tile, end: Tile):
         if end.getRow() == start.getRow() or end.getCol() == start.getCol():
             return True

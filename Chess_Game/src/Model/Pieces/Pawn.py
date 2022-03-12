@@ -5,11 +5,12 @@ from Model.Piece import Piece, PieceColor, PieceType
 class Pawn(Piece):
 
     def __init__(self, isWhite):
-        Piece.__init__(self,isWhite, PieceType.Pawn)
+        Piece.__init__(self, isWhite, PieceType.Pawn)
         self.type = PieceType.Pawn
         
+    def getColorString(self):
+        return super().getColorString(self.isWhite)
         
-
     def getType(self):
         return self.type
 

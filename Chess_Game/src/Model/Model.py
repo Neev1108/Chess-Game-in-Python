@@ -69,6 +69,7 @@ class Model:
             print(
                 "Please input the row of the current location of the piece you wish to move:")
             row = int(input())
+            
 
             if row < 0 or row > 7:
                 print("That is not a valid coordinate. Please try again.")
@@ -98,7 +99,7 @@ class Model:
 
             print(
                 "Please input the row of the destination of the piece you wish to move:")
-            row = input()
+            row = int(input())
 
             if row < 0 or row > 7:
                 print("That is not a valid coordinate. Please try again.")
@@ -106,7 +107,7 @@ class Model:
 
             print(
                 "Please input the column of the destination location of the piece you wish to move:")
-            col = input()
+            col = int(input())
 
             if col < 0 or col > 7:
                 print("That is not a valid coordinate. Please try again.")
@@ -148,25 +149,26 @@ class Model:
     def startTurn(self, move: Moves) -> bool:
 
         player = move.getPlayer()
-        piecedMoved = Piece(move.getPieceMoved())
-        endPiece = Piece(move.getDestinationPiece())
+        pieceMoved = move.getPieceMoved()
+        endPiece = move.getDestinationPiece()
+        print(pieceMoved)
         
         # Number 1 Check
-        if player.getColor() != piecedMoved.getColorString():
+        if player.getColor() != pieceMoved.getColorString():
             print("The piece you selected is your opponent's. Please select a " + player.getColor() + " piece.")
             return False
         
         # Check number 2 and destination checks for ally or enemy (with no collision checks)
-        if not piecedMoved.isValidMove(move.getCurrentPos(), move.getEndPos()):
+        if not pieceMoved.isValidMove(move.getCurrentPos(), move.getEndPos()):
             print("Error: Invalid move.")
             return False
         
             
-        if self.checkCollision(move, player, piecedMoved):
+        if self.checkCollision(move, player, pieceMoved):
             return False
         
         
-        if self.checkDestinationForAlly(move, player, piecedMoved):
+        if self.checkDestinationForAlly(move, player, pieceMoved):
             return False
         
         
@@ -184,7 +186,7 @@ class Model:
             print("This move would leave your King in danger and thus cannot be performed")
             return False
         
-        piecedMoved.move(move.getCurrentPos(), move.endPos)
+        pieceMoved.move(move.getCurrentPos(), move.endPos)
         
         
         if endPiece != None:
@@ -196,10 +198,10 @@ class Model:
         print("Move successful")
         
         if endPiece.isinstance(King):
-            event = GameEvent.WHITE_WIN
+            self.event = GameEvent.WHITE_WIN
             
         else:
-            event = GameEvent.BLACK_WIN
+            self.event = GameEvent.BLACK_WIN
             
         # if game complete
         if self.getEvent() == GameEvent.BLACK_WIN or self.getEvent == GameEvent.WHITE_WIN:

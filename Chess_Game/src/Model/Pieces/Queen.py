@@ -10,6 +10,9 @@ class Queen(Piece):
         
     def getType(self):
         return self.type
+    
+    def getColorString(self):
+        return super().getColorString(self.isWhite)
 
     def isValidMove(start: Tile, end: Tile):
         x_diff = abs(end.getRow() - start.getRow())

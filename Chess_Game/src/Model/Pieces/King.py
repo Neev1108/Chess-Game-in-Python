@@ -14,6 +14,9 @@ class King(Piece):
     def getType(self):
         return self.type
 
+    def getColorString(self):
+        return super().getColorString(self.isWhite)
+    
     def setInCheck(self, inCheck):
         self.inCheck = inCheck
 

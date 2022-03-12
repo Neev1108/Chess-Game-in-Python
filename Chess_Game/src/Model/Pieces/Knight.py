@@ -12,6 +12,9 @@ class Knight(Piece):
     def getType(self):
         return self.type
     
+    def getColorString(self):
+        return super().getColorString(self.isWhite)
+    
 
     def isValidMove(origin: Tile, destination: Tile):
 

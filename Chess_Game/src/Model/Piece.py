@@ -66,9 +66,16 @@ class Piece():
         
     def getColorString(self):
         return self.color_string
+    
+    def getColorString(self, isWhite):
+        if isWhite == True:
+            return "White"
+        else:
+            return "Black"
+        
         
     def __str__(self):
-        return self.getColorString + " " + self.getPieceType()
+        return self.getColorString() + " " + self.getPieceType()
     
     
     @abstractmethod

@@ -5,14 +5,15 @@ class Bishop(Piece):
     
     
     def __init__(self, isWhite: bool):
-        Piece.__init__(self,isWhite, PieceType.Bishop)
+        Piece.__init__(self, isWhite, PieceType.Bishop)
         self.type = PieceType.Bishop
         
     
     def getType(self):
         return self.type
     
-    
+    def getColorString(self):
+        return super().getColorString(self.isWhite)
     
     def isValidMove(start: Tile, end: Tile):
         x_diff = abs(end.getRow() - start.getRow())
