@@ -16,6 +16,7 @@ class GameEvent:
 
 class Model:
     
+    # Constructor for the Model
     def __init__(self):
         self.board = Board().getBoard()
         self.player1 = Player("White")
@@ -24,23 +25,57 @@ class Model:
         self.doTurn = self.player1
         self.event = GameEvent.NOT_STARTED
 
+        # Checking if the color of the first moving player is white.
         if self.player1.getColor() == "White":
             self.doTurn = self.player1
         else:
             self.doTurn = self.player2
 
+    """
+	 Method to get the Player1
+	 @return player
+    """
     def getPlayer1(self):
         return self.player1
 
+
+    """
+    /**
+	 * Method to get the Player
+	 * @return player
+	 */
+    """
     def getPlayer2(self):
         return self.player2
 
+
+    """
+    /**
+	 * Method for making the players to complete their turn
+	 * @return The player that needs to do the turn
+	 */
+    """
     def getDoTurn(self):
         return self.doTurn
 
+
+    """
+    /**
+	 * Method to get the current state of the game. 
+	 * @return GameEvent
+	 */
+  
+    """
     def getEvent(self):
         return self.event
 
+
+    """
+    /**
+	 * Method to print the board with all the pieces
+	 * on the board.
+	 */
+    """
     def printBoard(self):
         b = self.board
         for x in range(8):
@@ -56,6 +91,13 @@ class Model:
                     if y == 7:
                         print()
 
+
+
+    """
+    /**
+	 * Method to play the game	 
+	 */
+    """
     def playGame(self):
         currentPlayer = self.getPlayer1()
 
@@ -129,6 +171,17 @@ class Model:
 
                 print("Turn Complete , " + currentPlayer.toString() +
                       " will begin their turn.")
+                
+                
+    """
+    /**
+	 * Method to check if the player is making a valid move 
+	 * and not moving the enemy pieces
+	 * @param move The move user tries to make
+	 * @return The boolean value by checking the validity of the move.
+	 */
+  
+    """
 
     # Multiple cases for this
     # 1. Not Moving your own piece (not the same color as the player)
@@ -213,8 +266,17 @@ class Model:
 
         return True
 
-    # These 3 methods need to be worked on
 
+    """
+    /**
+	  * Method to check if the destination is occupied by a friendly piece or not
+	  * @param move The valid move of the player
+	  * @param player The Player making the move
+	  * @param pieceMoved The piece moved by the player
+	  * @return false if there is not an ally (either empty or enemy)
+	  */
+   
+    """
     def checkDestinationForAlly(move: Moves, player: Player, piecedMoved: Piece):
         if move.getEndPos().getOccupied() == False:
             return False
@@ -226,6 +288,16 @@ class Model:
 
     # Checking collisions when moving pieces that can move multiple tiles
 
+    """
+    /**
+	  * Method to check if any collisions happened or not.
+	  * @param move The move player tries to make
+	  * @param player The Player making the move
+	  * @param pieceMoved The piece moved by the player
+	  * @return  false if there are NOT any collisions
+	  */
+	 // returns false if there are NOT any collisions
+    """
     def checkCollision(self, move: Moves, player: Player, pieceMoved: Piece):
         type = pieceMoved.getPieceType()
         destOcc = move.getEndPos().getOccupied()
@@ -313,6 +385,18 @@ class Model:
                     self.ifOccupiedTrue(occupied)
 
         return False
+    
+    
+    
+    
+    """
+    /**
+	  * Method to get whether king by checking all rows and columns that can reach king
+	  * @param King piece that has location, tile, and color
+	  * @return Whether king is in check
+	  */
+    
+    """
 
     def kingInCheck(self, king: King):
         result = False
@@ -498,16 +582,12 @@ class Model:
             
         
             
-            
-        
     
     def ifOccupiedTrue(occupied):
         if occupied:
             print("Piece collided on the way to destination at: "+ i)
             return True
         
-    def kingInCheck(King):
-        return
     
     def isOccupied(tile: Tile):
         if tile.getPiece() is not None:
