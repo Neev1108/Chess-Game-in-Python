@@ -17,9 +17,11 @@ class Board():
         # set pawns
         for x in range(8):
             self.board[1][x] = Tile(1, x, Pawn.Pawn(False))
+            self.board[1][x].getPiece().setCurrentTile(self.board[1][x])
 
         for x in range(8):
             self.board[6][x] = Tile(6, x, Pawn.Pawn(True))
+            self.board[6][x].getPiece().setCurrentTile(self.board[6][x])
 
         # set black side
         self.board[0][4] = Tile(0, 4, King.King(False))
@@ -48,6 +50,10 @@ class Board():
         # keep track of position of white King
         self.board[7][4].getPiece().setCurrentTile(self.board[7][4])
         self.whiteKing = self.board[7][4].getPiece()
+        
+        for i in range(2, 6):
+            for j in range(8):
+                self.board[i][j] = Tile(i, j, None)
 
     def getBoard(self):
         return self.board

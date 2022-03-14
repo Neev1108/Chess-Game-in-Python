@@ -33,7 +33,7 @@ class Pawn(Piece):
             return False
 
         if diffCol != 0:
-            destOcc = destination.getIsOccupied()
+            destOcc = destination.getOccupied()
 
             if destOcc == False:
                 print("You can't capture an empty space.")
@@ -45,7 +45,7 @@ class Pawn(Piece):
 
             return True
 
-        if destination.getIsOccupied == True:
+        if destination.getOccupied == True:
             print("Pawns cannot interact with pieces directly ahead")
             return False
 

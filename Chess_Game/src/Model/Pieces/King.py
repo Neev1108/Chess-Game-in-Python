@@ -31,7 +31,7 @@ class King(Piece):
         if diffRow > 1 or diffCol > 1:
             return False
 
-        if end.getIsOccupied() == True:
+        if end.getOccupied() == True:
             if end.getPiece().getColorString() == start.getPiece.getColorString():
                 print("That tile is already held by an ally")
                 return False

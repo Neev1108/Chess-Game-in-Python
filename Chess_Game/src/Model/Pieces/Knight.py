@@ -17,9 +17,9 @@ class Knight(Piece):
     
 
     def isValidMove(self, origin: Tile, destination: Tile):
-
-        if destination.getIsOccupied() == True:
+        if destination.getOccupied() == True:
             if destination.getPiece().isWhite() == self.isWhite:
+                print("")
                 return False
 
         x_diff = abs(destination.getRow() - origin.getRow())

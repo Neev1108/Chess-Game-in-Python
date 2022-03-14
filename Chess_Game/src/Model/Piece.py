@@ -86,8 +86,8 @@ class Piece():
     def move(self, origin: Tile, destination:Tile):
         destination.setPiece(origin.getPiece())
         origin.setPiece(None)
-        destination.setIsOccupied(True)
-        origin.setIsOccupied(False)
+        destination.setOccupied(True)
+        origin.setOccupied(False)
         self.setHasMoved(True)
             
           

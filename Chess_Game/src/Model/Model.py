@@ -6,7 +6,7 @@ from Model.Piece import Piece, PieceType
 from Model.Pieces.King import King
 
 
-class GameEvent:
+class GameEvent():
     WHITE_WIN = "1"
     BLACK_WIN = "2"
     IN_PROGRESS = "3"
@@ -18,7 +18,7 @@ class Model:
     
     # Constructor for the Model
     def __init__(self):
-        self.board = Board().getBoard()
+        self.board = Board()
         self.player1 = Player("White")
         self.player2 = Player("Black")
 
@@ -77,7 +77,7 @@ class Model:
 	 */
     """
     def printBoard(self):
-        b = self.board
+        b = self.board.getBoard()
         for x in range(8):
             for y in range(8):
                 if b[x][y].getPiece() == None:
@@ -120,7 +120,7 @@ class Model:
             if col < 0 or col > 7:
                 print("That is not a valid coordinate. Please try again.")
 
-            currentTile = self.board[row][col]
+            currentTile = self.board.getTile(row, col)
 
             if currentTile.getOccupied() == False:
                 print("The tile you picked has no piece. Please try again.")
@@ -137,39 +137,40 @@ class Model:
 
             print(
                 "Please input the row of the destination of the piece you wish to move:")
-            row = int(input())
+            dest_row = int(input())
 
-            if row < 0 or row > 7:
+            if dest_row < 0 or dest_row > 7:
                 print("That is not a valid coordinate. Please try again.")
                 continue
 
             print(
                 "Please input the column of the destination location of the piece you wish to move:")
-            col = int(input())
+            dest_col = int(input())
 
-            if col < 0 or col > 7:
+            if dest_col < 0 or dest_col > 7:
                 print("That is not a valid coordinate. Please try again.")
 
-            targetTile = self.board[row][col]
+            targetTile = self.board.getTile(dest_row, dest_col)
 
             currentMove = Moves(currentPlayer, currentTile, targetTile)
+            print(str(currentPlayer) + " will try to make a move from " + str(currentTile) + " to " + str(targetTile))
             validMove = self.startTurn(currentMove)
 
             if not validMove:
                 continue
             print("Move Successful")
 
-            if self.getEvent == GameEvent.BlackWin or self.getEvent == GameEvent.WhiteWin:
+            if self.getEvent == GameEvent.BLACK_WIN or self.getEvent == GameEvent.WHITE_WIN:
                 print("Game Over")
                 break
             else:
-                if self.currentPlayer == self.getPlayer1():
-                    self.currentPlayer = self.getPlayer2()
+                if currentPlayer == self.getPlayer1():
+                    currentPlayer = self.getPlayer2()
 
                 else:
-                    self.currentPlayer = self.getPlayer1()
+                    currentPlayer = self.getPlayer1()
 
-                print("Turn Complete , " + currentPlayer.toString() +
+                print("Turn Complete , " + str(currentPlayer) +
                       " will begin their turn.")
                 
                 
@@ -203,31 +204,39 @@ class Model:
             print("The piece you selected is your opponent's. Please select a " +
                   player.getColor() + " piece.")
             return False
+        
+        print("Passed Check 1. (Your piece)")
 
         # Check number 2 and destination checks for ally or enemy (with no collision checks)
         if not pieceMoved.isValidMove(move.getCurrentPos(), move.getEndPos()):
             print("Error: Invalid move.")
             return False
+        
+        print("Passed Check 2. (Valid Move)")
 
         if self.checkCollision(move, player, pieceMoved):
             return False
+        
+        print("Passed Check 3. (No Collisions)")
 
         if self.checkDestinationForAlly(move, player, pieceMoved):
             return False
+        
+        print("Passed Check 4. No allies at location.")
 
         # Following is King is checks (need to be tweaked)
 
-        testAllyKingCheck = False
+        # testAllyKingCheck = False
 
-        if player.getColor() == "White":
-            testAllyKingCheck = self.kingInCheck(self.board.getWhiteKing())
-        else:
-            testAllyKingCheck = self.kingInCheck(self.board.getBlackKing())
+        # if player.getColor() == "White":
+        #     testAllyKingCheck = self.kingInCheck(self.board.getWhiteKing())
+        # else:
+        #     testAllyKingCheck = self.kingInCheck(self.board.getBlackKing())
 
-        if testAllyKingCheck:
-            print(
-                "This move would leave your King in danger and thus cannot be performed")
-            return False
+        # if testAllyKingCheck:
+        #     print(
+        #         "This move would leave your King in danger and thus cannot be performed")
+        #     return False
 
         pieceMoved.move(move.getCurrentPos(), move.endPos)
 
@@ -277,7 +286,7 @@ class Model:
 	  */
    
     """
-    def checkDestinationForAlly(move: Moves, player: Player, piecedMoved: Piece):
+    def checkDestinationForAlly(self, move: Moves, player: Player, piecedMoved: Piece):
         if move.getEndPos().getOccupied() == False:
             return False
 
@@ -301,9 +310,10 @@ class Model:
     def checkCollision(self, move: Moves, player: Player, pieceMoved: Piece):
         type = pieceMoved.getPieceType()
         destOcc = move.getEndPos().getOccupied()
+        print(type)
 
         # Knight has no collision problem so quick check here
-        if isinstance(type, PieceType.Knight) and destOcc == True:
+        if type == PieceType.Knight and destOcc == True:
             if pieceMoved.getPieceColor() == move.getDestinationPiece().getPieceColor():
                 print("Spot is occupied by an ally. Cannot move.")
                 return True
@@ -323,7 +333,7 @@ class Model:
                     current_row = move.getCurrentPos().getRow()
                     current_col = move.getCurrentPos().getCol() + i
                     occupied = self.isOccupied(
-                        self.board[current_row][current_col])
+                        self.board.board[current_row][current_col])
 
                     if occupied:
                         print("Piece collided on the way to destination at: " + i)
@@ -333,7 +343,7 @@ class Model:
                     current_row = move.getCurrentPos().getRow()
                     current_col = move.getCurrentPos().getCol() + i
                     occupied = self.isOccupied(
-                        self.board[current_row][current_col])
+                        self.board.board[current_row][current_col])
                     self.ifOccupiedTrue(occupied)
 
         # Moving only in vertical direction
@@ -343,7 +353,7 @@ class Model:
                     current_row = move.getCurrentPos().getRow() + i
                     current_col = move.getCurrentPos().getCol()
                     occupied = self.isOccupied(
-                        self.board[current_row][current_col])
+                        self.board.board[current_row][current_col])
                     self.ifOccupiedTrue(occupied)
 
             else:
@@ -351,7 +361,7 @@ class Model:
                     current_row = move.getCurrentPos().getRow() + i
                     current_col = move.getCurrentPos().getCol()
                     occupied = self.isOccupied(
-                        self.board[current_row][current_col])
+                        self.board.board[current_row][current_col])
                     self.ifOccupiedTrue(occupied)
 
         if abs(changeRow) == abs(changeCol):
@@ -360,28 +370,28 @@ class Model:
                     current_row = move.getCurrentPos().getRow() + i
                     current_col = move.getCurrentPos().getCol() + i
                     occupied = self.isOccupied(
-                        self.board[current_row][current_col])
+                        self.board.board[current_row][current_col])
                     self.ifOccupiedTrue(occupied)
             elif changeRow < 0 and changeCol < 0:
                 for i in range(-1, changeRow, -1):
                     current_row = move.getCurrentPos().getRow() + i
                     current_col = move.getCurrentPos().getCol() + i
                     occupied = self.isOccupied(
-                        self.board[current_row][current_col])
+                        self.board.board[current_row][current_col])
                     self.ifOccupiedTrue(occupied)
             elif changeRow < 0 and changeCol > 0:
                 for i in range(1, changeCol):
                     current_row = move.getCurrentPos().getRow() - i
                     current_col = move.getCurrentPos().getCol() + i
                     occupied = self.isOccupied(
-                        self.board[current_row][current_col])
+                        self.board.board[current_row][current_col])
                     self.ifOccupiedTrue(occupied)
             elif changeRow > 0 and changeCol < 0:
                 for i in range(1, changeRow):
                     current_row = move.getCurrentPos().getRow() + i
                     current_col = move.getCurrentPos().getCol() - i
                     occupied = self.isOccupied(
-                        self.board[current_row][current_col])
+                        self.board.board[current_row][current_col])
                     self.ifOccupiedTrue(occupied)
 
         return False
@@ -398,182 +408,183 @@ class Model:
     
     """
 
-    def kingInCheck(self, king: King):
-        result = False
-        kingTile = king.getCurrentTile()
-        checkRow = kingTile.getRow()
-        checkCol = kingTile.getCol()
-        checkTile = kingTile
-        checkForPiece = False
-        checkPiece = None
 
-        while checkRow > -1:
-            checkTile = self.board[checkRow][checkCol]
-            checkForPiece = checkTile.getOccupied()
+    # def kingInCheck(self, king: King):
+    #     result = False
+    #     kingTile = king.getCurrentTile()
+    #     checkRow = kingTile.getRow()
+    #     checkCol = kingTile.getCol()
+    #     checkTile = kingTile
+    #     checkForPiece = False
+    #     checkPiece = None
 
-            if checkForPiece == True:
-                checkPiece = checkTile.getPiece()
-                if king.getColorString() == checkPiece.getColorString():
-                    if checkPiece.isValidMove(checkTile, kingTile):
-                        print(str(checkPiece))
-                        king.setInCheck(True)
-                        return True
-                    else:
-                        break
-            else:
-                break
+    #     while checkRow > -1:
+    #         checkTile = self.board.board[checkRow][checkCol]
+    #         checkForPiece = checkTile.getOccupied()
 
-            checkRow = checkRow - 1
+    #         if checkForPiece == True:
+    #             checkPiece = checkTile.getPiece()
+    #             if king.getColorString() == checkPiece.getColorString():
+    #                 if checkPiece.isValidMove(checkTile, kingTile):
+    #                     print(str(checkPiece))
+    #                     king.setInCheck(True)
+    #                     return True
+    #                 else:
+    #                     break
+    #         else:
+    #             break
 
-        checkRow = kingTile.getRow()
+    #         checkRow = checkRow - 1
+
+    #     checkRow = kingTile.getRow()
         
-        while checkRow < 8:
-            checkTile = self.board[checkRow][checkCol]
-            checkForPiece = checkTile.getOccupied()
+    #     while checkRow < 8:
+    #         checkTile = self.board.board[checkRow][checkCol]
+    #         checkForPiece = checkTile.getOccupied()
 
-            if checkForPiece == True:
-                checkPiece = checkTile.getPiece()
-                if king.getColorString() == checkPiece.getColorString():
-                    if checkPiece.isValidMove(checkTile, kingTile):
-                        print(str(checkPiece))
-                        king.setInCheck(True)
-                        return True
-                    else:
-                        break
-            else:
-                break
+    #         if checkForPiece == True:
+    #             checkPiece = checkTile.getPiece()
+    #             if king.getColorString() == checkPiece.getColorString():
+    #                 if checkPiece.isValidMove(checkTile, kingTile):
+    #                     print(str(checkPiece))
+    #                     king.setInCheck(True)
+    #                     return True
+    #                 else:
+    #                     break
+    #         else:
+    #             break
 
-            checkRow = checkRow + 1
+    #         checkRow = checkRow + 1
             
             
-        checkRow = kingTile.getRow()
-        while checkCol > -1:
-            checkTile = self.board[checkRow][checkCol]
-            checkForPiece = checkTile.getOccupied()
+    #     checkRow = kingTile.getRow()
+    #     while checkCol > -1:
+    #         checkTile = self.board.board[checkRow][checkCol]
+    #         checkForPiece = checkTile.getOccupied()
 
-            if checkForPiece == True:
-                checkPiece = checkTile.getPiece()
-                if king.getColorString() == checkPiece.getColorString():
-                    if checkPiece.isValidMove(checkTile, kingTile):
-                        print(str(checkPiece))
-                        king.setInCheck(True)
-                        return True
-                    else:
-                        break
-            else:
-                break
+    #         if checkForPiece == True:
+    #             checkPiece = checkTile.getPiece()
+    #             if king.getColorString() == checkPiece.getColorString():
+    #                 if checkPiece.isValidMove(checkTile, kingTile):
+    #                     print(str(checkPiece))
+    #                     king.setInCheck(True)
+    #                     return True
+    #                 else:
+    #                     break
+    #         else:
+    #             break
 
-            checkCol = checkCol - 1
+    #         checkCol = checkCol - 1
         
-        checkCol = kingTile.getCol()
-        while checkCol > -1:
-            checkTile = self.board[checkRow][checkCol]
-            checkForPiece = checkTile.getOccupied()
+    #     checkCol = kingTile.getCol()
+    #     while checkCol > -1:
+    #         checkTile = self.board.board[checkRow][checkCol]
+    #         checkForPiece = checkTile.getOccupied()
 
-            if checkForPiece == True:
-                checkPiece = checkTile.getPiece()
-                if king.getColorString() == checkPiece.getColorString():
-                    if checkPiece.isValidMove(checkTile, kingTile):
-                        print(str(checkPiece))
-                        king.setInCheck(True)
-                        return True
-                    else:
-                        break
-            else:
-                break
+    #         if checkForPiece == True:
+    #             checkPiece = checkTile.getPiece()
+    #             if king.getColorString() == checkPiece.getColorString():
+    #                 if checkPiece.isValidMove(checkTile, kingTile):
+    #                     print(str(checkPiece))
+    #                     king.setInCheck(True)
+    #                     return True
+    #                 else:
+    #                     break
+    #         else:
+    #             break
 
-            checkCol = checkCol + 1
+    #         checkCol = checkCol + 1
             
             
-        checkCol = kingTile.getCol()
-        checkRow = kingTile.getRow()
-        while checkCol < 8 and checkRow < 8:
-            checkTile = self.board[checkRow][checkCol]
-            checkForPiece = checkTile.getOccupied()
+    #     checkCol = kingTile.getCol()
+    #     checkRow = kingTile.getRow()
+    #     while checkCol < 8 and checkRow < 8:
+    #         checkTile = self.board.board[checkRow][checkCol]
+    #         checkForPiece = checkTile.getOccupied()
 
-            if checkForPiece == True:
-                checkPiece = checkTile.getPiece()
-                if king.getColorString() == checkPiece.getColorString():
-                    if checkPiece.isValidMove(checkTile, kingTile):
-                        print(str(checkPiece))
-                        king.setInCheck(True)
-                        return True
-                    else:
-                        break
-            else:
-                break
+    #         if checkForPiece == True:
+    #             checkPiece = checkTile.getPiece()
+    #             if king.getColorString() == checkPiece.getColorString():
+    #                 if checkPiece.isValidMove(checkTile, kingTile):
+    #                     print(str(checkPiece))
+    #                     king.setInCheck(True)
+    #                     return True
+    #                 else:
+    #                     break
+    #         else:
+    #             break
 
-            checkCol = checkCol + 1
-            checkRow = checkRow + 1
+    #         checkCol = checkCol + 1
+    #         checkRow = checkRow + 1
             
             
-        checkCol = kingTile.getCol()
-        checkRow = kingTile.getRow()
-        while checkCol > -1 and checkRow > -1:
-            checkTile = self.board[checkRow][checkCol]
-            checkForPiece = checkTile.getOccupied()
+    #     checkCol = kingTile.getCol()
+    #     checkRow = kingTile.getRow()
+    #     while checkCol > -1 and checkRow > -1:
+    #         checkTile = self.board.board[checkRow][checkCol]
+    #         checkForPiece = checkTile.getOccupied()
 
-            if checkForPiece == True:
-                checkPiece = checkTile.getPiece()
-                if king.getColorString() == checkPiece.getColorString():
-                    if checkPiece.isValidMove(checkTile, kingTile):
-                        print(str(checkPiece))
-                        king.setInCheck(True)
-                        return True
-                    else:
-                        break
-            else:
-                break
+    #         if checkForPiece == True:
+    #             checkPiece = checkTile.getPiece()
+    #             if king.getColorString() == checkPiece.getColorString():
+    #                 if checkPiece.isValidMove(checkTile, kingTile):
+    #                     print(str(checkPiece))
+    #                     king.setInCheck(True)
+    #                     return True
+    #                 else:
+    #                     break
+    #         else:
+    #             break
 
-            checkCol = checkCol - 1
-            checkRow = checkRow - 1
+    #         checkCol = checkCol - 1
+    #         checkRow = checkRow - 1
             
             
-        checkCol = kingTile.getCol()
-        checkRow = kingTile.getRow()
-        while checkCol > -1 and checkRow < 8:
-            checkTile = self.board[checkRow][checkCol]
-            checkForPiece = checkTile.getOccupied()
+    #     checkCol = kingTile.getCol()
+    #     checkRow = kingTile.getRow()
+    #     while checkCol > -1 and checkRow < 8:
+    #         checkTile = self.board.board[checkRow][checkCol]
+    #         checkForPiece = checkTile.getOccupied()
 
-            if checkForPiece == True:
-                checkPiece = checkTile.getPiece()
-                if king.getColorString() == checkPiece.getColorString():
-                    if checkPiece.isValidMove(checkTile, kingTile):
-                        print(str(checkPiece))
-                        king.setInCheck(True)
-                        return True
-                    else:
-                        break
-            else:
-                break
+    #         if checkForPiece == True:
+    #             checkPiece = checkTile.getPiece()
+    #             if king.getColorString() == checkPiece.getColorString():
+    #                 if checkPiece.isValidMove(checkTile, kingTile):
+    #                     print(str(checkPiece))
+    #                     king.setInCheck(True)
+    #                     return True
+    #                 else:
+    #                     break
+    #         else:
+    #             break
 
-            checkCol = checkCol - 1
-            checkRow = checkRow + 1
+    #         checkCol = checkCol - 1
+    #         checkRow = checkRow + 1
             
             
-        checkCol = kingTile.getCol()
-        checkRow = kingTile.getRow()
-        while checkCol < 8 and checkRow > -1:
-            checkTile = self.board[checkRow][checkCol]
-            checkForPiece = checkTile.getOccupied()
+    #     checkCol = kingTile.getCol()
+    #     checkRow = kingTile.getRow()
+    #     while checkCol < 8 and checkRow > -1:
+    #         checkTile = self.board.board[checkRow][checkCol]
+    #         checkForPiece = checkTile.getOccupied()
 
-            if checkForPiece == True:
-                checkPiece = checkTile.getPiece()
-                if king.getColorString() == checkPiece.getColorString():
-                    if checkPiece.isValidMove(checkTile, kingTile):
-                        print(str(checkPiece))
-                        king.setInCheck(True)
-                        return True
-                    else:
-                        break
-            else:
-                break
+    #         if checkForPiece == True:
+    #             checkPiece = checkTile.getPiece()
+    #             if king.getColorString() == checkPiece.getColorString():
+    #                 if checkPiece.isValidMove(checkTile, kingTile):
+    #                     print(str(checkPiece))
+    #                     king.setInCheck(True)
+    #                     return True
+    #                 else:
+    #                     break
+    #         else:
+    #             break
 
-            checkCol = checkCol - 1
-            checkRow = checkRow + 1
+    #         checkCol = checkCol - 1
+    #         checkRow = checkRow + 1
             
-        king.setInCheck(result)
-        return result
+    #     king.setInCheck(result)
+    #     return result
             
             
         
@@ -585,7 +596,7 @@ class Model:
     
     def ifOccupiedTrue(occupied):
         if occupied:
-            print("Piece collided on the way to destination at: "+ i)
+            print("Piece collided on the way to destination")
             return True
         
     
@@ -594,6 +605,9 @@ class Model:
             return True
         else: 
             return False
+        
+    def getTile(self, row, col):
+        return self.board.getTile(row, col)
         
             
             
