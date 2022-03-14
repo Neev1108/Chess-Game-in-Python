@@ -1,5 +1,6 @@
 
-
+from Model.Piece import Piece
+ 
 class Tile:
     
     
@@ -15,7 +16,7 @@ class Tile:
             self.occupied = True
             
         
-    def getPiece(self):
+    def getPiece(self) -> Piece:
         return self.piece
     
     def setPiece(self, piece):

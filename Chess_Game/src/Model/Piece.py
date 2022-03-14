@@ -47,7 +47,7 @@ class Piece():
     def setCurrentTile(self, newTile: Tile):
         self.currentTile = newTile
         
-    def getCurrentTile(self):
+    def getCurrentTile(self) -> Tile:
         return self.currentTile
     
     def getPieceType(self):
